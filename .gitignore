@@ -1,0 +1,6 @@
+.idea
+
+databases/**/*
+docker/nginx/logs/**/*
+docker/httpd/logs/**/*
+data-app/**/*

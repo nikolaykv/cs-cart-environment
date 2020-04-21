@@ -1,0 +1,61 @@
+version: '3.3'
+
+services:
+  apache:
+    image: httpd:2.4
+    container_name: cs-cart_apache
+    volumes:
+      - ${DIRR_APP}:/var/www/html
+      - ${HTTPD_CONF}:/usr/local/apache2/conf/httpd.conf
+      - ${HTTPD_LOGS}:/usr/local/apache2/logs
+    depends_on:
+      - php
+
+  nginx:
+    image: nginx:1.13
+    container_name: cs-cart_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ${DIRR_APP}:/var/www/html
+      - ${NGINX_CONF}:/etc/nginx/nginx.conf
+      - ${NGINX_LOGS}:/var/log/nginx
+    depends_on:
+      - apache
+
+  php:
+    container_name: cs-cart_php
+    build:
+      ./php
+    volumes:
+      - ${DIRR_APP}:/var/www/html
+      - ${PHP_INI}:/usr/local/etc/php/php.ini
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    container_name: cs-cart_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_LOGIN}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - ${DB_PATH}:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    container_name: cs-cart_adminer
+    ports:
+      - "8080:8080"
+
+  composer:
+    build: ./composer
+    container_name: cs-cart_composer
+    volumes:
+      - ${DIRR_APP}:/var/www
+    working_dir: /var/www
+    command: composer install
