@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<addon scheme="3.0">
+    <id>first_addon</id>
+    <version>1.0</version>
+    <name>Мой первый модуль</name>
+    <description>Создаём модуль для CS-Cart</description>
+
+    <status>active</status>
+
+    <authors>
+        <author>
+            <name>CS-Cart</name>
+            <email>contact@cs-cart.com</email>
+            <url>http://cs-cart.com</url>
+            <phone>+1 999 1234 5678</phone>
+        </author>
+    </authors>
+
+    <compatibility>
+
+        <core_version>
+            <min>4.11.3</min>
+            <max>4.11.3</max>
+        </core_version>
+
+        <core_edition>
+            MULTIVENDOR
+        </core_edition>
+
+        <!-- Minimal/Maximal PHP version. Min or Max parameter can be optional -->
+        <php_version>
+            <min>7.1.33</min>
+            <max>7.1.33</max>
+        </php_version>
+
+    </compatibility>
+
+    <default_language>ru</default_language>
+
+    <queries>
+        <item>
+            ALTER TABLE `?:products` ADD `video` varchar(255) NOT NULL default ''
+        </item>
+        <item for="uninstall">
+            ALTER TABLE  `?:products` DROP `video`
+        </item>
+    </queries>
+
+</addon>
